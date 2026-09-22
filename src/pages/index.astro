@@ -9,7 +9,7 @@ import Blog from '../sections/Blog';
 import Contact from '../sections/Contact';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
-const allPosts = (await getCollection('blog')) as CollectionEntry<'blog'>[];
+const allPosts = await getCollection('blog');
 allPosts.sort((a, b) => {
   if (!a.data.date) return 1;
   if (!b.data.date) return -1;
@@ -17,7 +17,7 @@ allPosts.sort((a, b) => {
 });
 
 const recentPosts = allPosts.slice(0, 2).map((post) => ({
-  slug: post.slug,
+  slug: post.id,
   title: post.data.title,
   description: post.data.description,
   date: post.data.date

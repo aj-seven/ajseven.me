@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
-const posts = (await getCollection('blog')) as CollectionEntry<'blog'>[];
+const posts = await getCollection('blog');
 posts.sort((a, b) => {
   if (!a.data.date) return 1;
   if (!b.data.date) return -1;
@@ -41,7 +41,7 @@ posts.sort((a, b) => {
     <div class="space-y-3 text-left">
       {posts.map((post) => (
         <a
-          href={`/blog/${post.slug}`}
+          href={`/blog/${post.id}`}
           class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20 transition-all duration-200 group"
         >
           <div class="space-y-1.5 flex-1 min-w-0">
