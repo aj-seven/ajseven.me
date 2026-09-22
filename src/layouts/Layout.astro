@@ -1,6 +1,6 @@
 ---
 import "../index.css";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import GlobalBackground from "../components/Background";
 import NavbarWrapper from "../components/NavbarWrapper";
 import TerminalWrapper from "../components/TerminalWrapper";
@@ -101,7 +101,7 @@ const canonicalURL =
       });
     </script>
 
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body class="bg-[#050505] text-white">
     <GlobalBackground client:only="react" transition:persist="bg" />
