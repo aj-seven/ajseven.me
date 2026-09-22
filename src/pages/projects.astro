@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Projects from '../sections/Projects';
+---
+
+<Layout title="Projects | Abdul Jaber">
+  <main class="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-16 sm:pt-20 pb-16 min-h-screen space-y-12">
+    <Projects client:load />
+  </main>
+</Layout>

@@ -14,11 +14,11 @@ Clone the repository, install the dependencies and start the application
 ```bash
 git clone git@github.com:Aj-Seven/aj-seven.me.git
 cd ajseven.me
-npm install
-npm start
+pnpm install
+pnpm run dev
 
 # For Build and serving static pages
-npm run build
+pnpm run build
 npm -g install serve
 serve build
 ```

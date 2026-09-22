@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404 - Page Not Found | Abdul Jaber">
+  <main class="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-32 pb-24 min-h-screen text-left space-y-6">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-zinc-400 font-mono text-xs">
+      <span class="w-2 h-2 rounded-full bg-red-400"></span>
+      404 // NOT FOUND
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
+      Page not found.
+    </h1>
+
+    <p class="text-sm sm:text-base text-zinc-400 max-w-lg leading-relaxed">
+      The page you are looking for doesn't exist, has been relocated, or is temporarily unavailable.
+    </p>
+
+    <div class="pt-4 flex flex-wrap items-center gap-3">
+      <a
+        href="/"
+        class="px-5 py-2.5 rounded-xl bg-white text-black font-bold text-xs hover:bg-zinc-200 transition-all shadow-sm"
+      >
+        ← Return to Home
+      </a>
+      <a
+        href="/blog"
+        class="px-5 py-2.5 rounded-xl border border-white/10 bg-white/5 text-zinc-300 font-semibold text-xs hover:bg-white/10 hover:text-white transition-all"
+      >
+        Explore Writings
+      </a>
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ElectricEffect from '../components/ElectricEffect';
+import Hero from '../sections/Hero';
+import About from '../sections/About';
+import Projects from '../sections/Projects';
+import Skills from '../sections/Skills';
+import Blog from '../sections/Blog';
+import Contact from '../sections/Contact';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const allPosts = (await getCollection('blog')) as CollectionEntry<'blog'>[];
+allPosts.sort((a, b) => {
+  if (!a.data.date) return 1;
+  if (!b.data.date) return -1;
+  return b.data.date.valueOf() - a.data.date.valueOf();
+});
+
+const recentPosts = allPosts.slice(0, 2).map((post) => ({
+  slug: post.slug,
+  title: post.data.title,
+  description: post.data.description,
+  date: post.data.date
+    ? post.data.date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })
+    : undefined,
+}));
+---
+
+<Layout>
+  <ElectricEffect client:load />
+  <main class="w-full max-w-4xl mx-auto px-4 sm:px-4 pt-16 sm:pt-20 pb-12 sm:pb-16 space-y-16 sm:space-y-24">
+    <section id="home" class="scroll-mt-28"><Hero client:load /></section>
+    <section id="about" class="scroll-mt-28"><About client:load /></section>
+    <section id="projects" class="scroll-mt-28"><Projects limit={3} client:load /></section>
+    <section id="skills" class="scroll-mt-28"><Skills client:load /></section>
+    <section id="blog" class="scroll-mt-28"><Blog posts={recentPosts} client:load /></section>
+    <section id="contact" class="scroll-mt-28"><Contact client:load /></section>
+  </main>
+</Layout>
+
+
+

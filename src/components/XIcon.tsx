@@ -1,13 +1,11 @@
-import React from 'react';
-
 const XIcon = ({ size = 24, color = "currentColor", className, ...props }: any) => {
   const { strokeWidth, ...rest } = props;
   return (
-    <svg 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill={color} 
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill={color}
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       {...rest}

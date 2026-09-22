@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Terminal, Code2, Github, Star } from "lucide-react";
+import { Terminal, Sun, Moon, Menu, X } from "lucide-react";
+import { useStore } from "@nanostores/react";
+import { themeMode, type ThemeMode } from "../store";
 
 type Props = {
   terminalMode: boolean;
@@ -10,9 +12,122 @@ type Props = {
   setUiType?: (v: "landing" | "modular") => void;
 };
 
-const Navbar = ({ terminalMode, setTerminalMode, uiType, setUiType }: Props) => {
-  const [stars, setStars] = useState<number | null>(null);
+const navLinks = [
+  { name: "About", href: "/#about" },
+  { name: "Projects", href: "/#projects" },
+  { name: "Stack", href: "/#skills" },
+  { name: "Writings", href: "/#blog" },
+  { name: "Connect", href: "/#contact" },
+];
+
+const AJCalligraphy = ({
+  terminalMode,
+  isLight,
+}: {
+  terminalMode: boolean;
+  isLight: boolean;
+}) => {
+  const gradId = "aj-calligraphy-grad";
+
+  return (
+    <div className="flex items-center group cursor-pointer select-none py-1">
+      <div className="relative w-10 h-8 sm:w-11 sm:h-8.5 flex items-center justify-center">
+        {/* Soft Ambient Glow */}
+        <div
+          className={`absolute -inset-1 blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-300 rounded-full ${
+            terminalMode
+              ? "bg-green-500/25"
+              : isLight
+              ? "bg-blue-500/15"
+              : "bg-sky-500/25"
+          }`}
+        />
+
+        <svg
+          viewBox="0 0 46 34"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="relative w-full h-full transition-transform duration-300 group-hover:scale-105"
+        >
+          <defs>
+            <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop
+                offset="0%"
+                stopColor={
+                  terminalMode
+                    ? "#22c55e"
+                    : isLight
+                    ? "#2563eb"
+                    : "#38bdf8"
+                }
+              />
+              <stop
+                offset="100%"
+                stopColor={
+                  terminalMode
+                    ? "#4ade80"
+                    : isLight
+                    ? "#1d4ed8"
+                    : "#818cf8"
+                }
+              />
+            </linearGradient>
+          </defs>
+
+          {/* Stroke 1: Calligraphy 'A' Up & Downstroke */}
+          <path
+            d="M 5 24 C 7.5 15, 12 5.5, 15 5 C 17.5 5.5, 21.5 15, 24 24"
+            stroke={`url(#${gradId})`}
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="aj-stroke-1"
+          />
+
+          {/* Stroke 2: Crossbar looping smoothly into 'J' Descender & Hook */}
+          <path
+            d="M 9 16.5 C 15 14.5, 22 14, 28 13.5 C 33.5 12, 34 5.5, 34 5.5 V 21.5 C 34 27, 27.5 28, 24.5 24.5"
+            stroke={`url(#${gradId})`}
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="aj-stroke-2"
+          />
+
+          {/* Stroke 3: Dynamic Underline Swoosh */}
+          <path
+            d="M 5 30 C 15 28, 28 28, 41 31"
+            stroke={`url(#${gradId})`}
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            className="aj-stroke-3"
+          />
+
+          {/* Calligraphy Accent Flourish Dot */}
+          <circle
+            cx="39"
+            cy="10"
+            r="1.6"
+            fill={
+              terminalMode
+                ? "#22c55e"
+                : isLight
+                ? "#2563eb"
+                : "#38bdf8"
+            }
+            className="transition-transform duration-300 group-hover:scale-125"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+};
+
+
+const Navbar = ({ terminalMode, setTerminalMode }: Props) => {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const currentTheme = useStore(themeMode);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -20,107 +135,159 @@ const Navbar = ({ terminalMode, setTerminalMode, uiType, setUiType }: Props) => 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    fetch("https://api.github.com/repos/aj-seven/aj-seven.me")
-      .then((res) => res.json())
-      .then((data) => {
-        if (typeof data.stargazers_count === "number") {
-          setStars(data.stargazers_count);
+  const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const nextTheme: ThemeMode = currentTheme === "dark" ? "light" : "dark";
+
+    const isViewTransitionSupported =
+      typeof document !== "undefined" &&
+      "startViewTransition" in document &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!isViewTransitionSupported) {
+      themeMode.set(nextTheme);
+      return;
+    }
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = (document as any).startViewTransition(() => {
+      themeMode.set(nextTheme);
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath: clipPath,
+        },
+        {
+          duration: 750,
+          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+          pseudoElement: "::view-transition-new(root)",
         }
-      })
-      .catch((err) => console.error("Failed to fetch repo stars", err));
-  }, []);
+      );
+    });
+  };
+
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${terminalMode ? "py-0" : scrolled ? "py-3" : "py-4"
-        }`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        terminalMode
+          ? "bg-black text-green-400 border-b border-green-500/30 py-2"
+          : scrolled
+          ? "bg-[#050505]/85 dark:bg-[#050505]/85 backdrop-blur-md border-b border-white/[0.06] py-2 sm:py-2.5"
+          : "bg-transparent py-2.5 sm:py-3.5"
+      }`}
     >
-      <div className={`mx-auto transition-all duration-500 ${terminalMode ? "max-w-full px-0 mt-2" : "max-w-7xl px-2 sm:px-4 lg:px-6"
-        }`}>
-        <div
-          className={`relative flex items-center justify-between px-2 sm:px-4 transition-all duration-500 ${terminalMode
-            ? "bg-black text-green-400 border-b border-green-500/30 rounded-none py-2"
-            : `py-3 rounded-2xl border ${scrolled
-              ? "bg-black/80 backdrop-blur-xl border-white/10 shadow-2xl"
-              : "bg-transparent border-transparent"
-            }`
-            }`}
+      <div className="max-w-4xl mx-auto px-4 sm:px-4 flex items-center justify-between">
+        {/* Animated Calligraphy AJ Logo */}
+        <a
+          href="/"
+          onClick={(e) => {
+            if (terminalMode) {
+              e.preventDefault();
+            }
+          }}
+          className="flex items-center"
         >
-          {/* Logo */}
-          <a
-            href="/"
-            onClick={(e) => {
-              if (terminalMode) {
-                e.preventDefault();
-              }
-            }}
-            className="flex items-center gap-2 group"
-          >
-            <div className={`p-2 rounded-xl border transition-all duration-300 ${terminalMode ? "border-green-500/50 bg-green-500/10" : "border-white/10 bg-white/5 group-hover:border-blue-500/50"
-              }`}>
-              {terminalMode ? (
-                <Terminal size={22} className="text-green-500" />
-              ) : (
-                <Code2 size={22} className="text-blue-500" />
-              )}
-            </div>
-            <div className="relative">
-              <span className="font-black text-2xl tracking-tighter uppercase text-white flex items-baseline">
-                AJ<span className={`text-[17px] ml-0.5 transition-colors ${terminalMode ? "text-zinc-500 group-hover:text-green-500" : "text-zinc-500 group-hover:text-blue-500"}`}>SEVEN</span>
-              </span>
-              <div className={`absolute -bottom-0.5 left-0 h-1 rounded-full transition-all duration-300 w-0 group-hover:w-full ${terminalMode ? "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]" : "bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"}`} />
-            </div>
-          </a>
+          <AJCalligraphy
+            terminalMode={terminalMode}
+            isLight={currentTheme === "light"}
+          />
+        </a>
 
-          {/* Controls */}
-          <div className="flex items-center gap-2">
-            {/* UI Toggle (Mini) */}
-            {/* {setUiType && (
-              <button
-                onClick={() => setUiType(uiType === "landing" ? "modular" : "landing")}
-                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 transition-all text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white"
-                title={`Switch to ${uiType === "landing" ? "Modular" : "Landing"} UI`}
+
+
+        {/* Desktop Nav Links (Centered) */}
+        {!terminalMode && (
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
               >
-                {uiType === "landing" ? (
-                  <><LayoutGrid size={12} /> Modular</>
-                ) : (
-                  <><ScrollText size={12} /> Landing</>
-                )}
-              </button>
+                {link.name}
+              </a>
+            ))}
+          </div>
+        )}
+
+        {/* Right Controls */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Theme Toggle Button with Circular Reveal */}
+          <button
+            onClick={toggleTheme}
+            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white hover:border-white/20 transition-all"
+            title={currentTheme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            aria-label="Toggle dark/light theme"
+          >
+            {currentTheme === "dark" ? (
+              <Sun size={16} className="text-amber-300" />
+            ) : (
+              <Moon size={16} className="text-blue-500" />
             )}
+          </button>
 
-            <div className="h-4 w-px bg-white/10 mx-1 hidden sm:block" /> */}
-
-            <a
-              href="https://github.com/aj-seven/aj-seven.me"
-              target="_blank"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 transition-all group"
-            >
-              <Github size={22} className="text-zinc-400 group-hover:text-white transition-colors" />
-              {stars !== null && (
-                <span className="flex items-center text-base font-black text-zinc-500 group-hover:text-white transition-colors">
-                  <Star size={18} className="text-yellow-500 fill-yellow-500 mr-1" />
-                  {stars}
-                </span>
-              )}
-            </a>
-
-            <button
-              onClick={() => setTerminalMode(!terminalMode)}
-              className={`p-2 rounded-xl border transition-all duration-300 ${terminalMode
+          {/* Terminal Toggle Button */}
+          <button
+            onClick={() => setTerminalMode(!terminalMode)}
+            className={`w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-xl border transition-all duration-300 ${
+              terminalMode
                 ? "border-green-500/50 bg-green-500/20 text-green-400"
                 : "border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:border-white/20"
-                }`}
-              title="Toggle Terminal"
+            }`}
+            title="Toggle Terminal"
+          >
+            <Terminal size={16} />
+          </button>
+
+          {/* Mobile Menu Toggle */}
+          {!terminalMode && (
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden w-8 h-8 flex items-center justify-center rounded-xl border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:border-white/20 transition-all"
+              title="Toggle Navigation Menu"
+              aria-label="Toggle navigation menu"
             >
-              <Terminal size={22} />
+              {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
             </button>
-          </div>
+          )}
         </div>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      {mobileMenuOpen && !terminalMode && (
+        <div className="md:hidden max-w-4xl mx-auto px-4 mt-2">
+          <div className="p-2.5 rounded-2xl border border-white/10 bg-black/95 backdrop-blur-2xl shadow-2xl flex flex-col gap-0.5 animate-in fade-in slide-in-from-top-2 duration-150">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3.5 py-2.5 rounded-xl text-xs font-semibold text-zinc-300 hover:text-white hover:bg-white/5 transition-all"
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
 
 export default Navbar;
+
