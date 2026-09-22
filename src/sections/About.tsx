@@ -1,147 +1,158 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { facts, timeline, personalInfo } from "../data/userData";
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { personalInfo, facts, timeline } from "../data/userData";
 
 const About = () => {
-  const [expandedIds, setExpandedIds] = useState<Record<number, boolean>>({});
+  const [activeYearIndex, setActiveYearIndex] = useState(0);
 
-  const toggleExpand = (index: number) => {
-    setExpandedIds((prev) => ({ ...prev, [index]: !prev[index] }));
+  const currentMilestone = timeline[activeYearIndex] || timeline[0];
+  const points = currentMilestone.more
+    ? currentMilestone.more
+      .split(". ")
+      .map((p) => p.trim())
+      .filter(Boolean)
+    : [];
+
+  const handlePrev = () => {
+    setActiveYearIndex((prev) => (prev > 0 ? prev - 1 : timeline.length - 1));
+  };
+
+  const handleNext = () => {
+    setActiveYearIndex((prev) => (prev < timeline.length - 1 ? prev + 1 : 0));
   };
 
   return (
-    <section id="about" className="w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 pt-32 pb-24 min-h-screen text-foreground relative z-10 scroll-mt-32">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="w-full max-w-6xl"
-      >
-        <div className="flex flex-col items-center mb-12 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl md:text-5xl lg:text-6xl font-black mb-6 text-white tracking-tighter"
-          >
-            Who Am I
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-base md:text-lg lg:text-xl text-zinc-500 max-w-2xl mx-auto font-medium"
-          >
-            A chronological journey through professional evolution and engineering milestones.
-          </motion.p>
-        </div>
+    <div className="w-full text-left space-y-10">
+      {/* Who Am I Section */}
+      <div className="space-y-4">
+        <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+          Who Am I
+        </h2>
 
-        {/* Intro */}
-        <div className="flex flex-col gap-8 mb-16 max-w-4xl mx-auto text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.6 }}
-            className="text-base md:text-xl lg:text-2xl text-zinc-400 leading-relaxed font-medium"
+        <p className="text-base sm:text-lg text-zinc-300 leading-relaxed max-w-3xl">
+          {personalInfo.aboutText1}
+          <a
+            href={personalInfo.collegeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-blue-400 underline decoration-blue-500/40 underline-offset-4 transition-colors font-medium"
           >
-            {personalInfo.aboutText1}
-            <a
-              href={personalInfo.collegeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-blue-500 underline decoration-blue-500/30 transition-colors"
+            {personalInfo.college}
+          </a>
+          {personalInfo.aboutText2}
+        </p>
+
+        {/* Minimal Tags */}
+        <div className="flex flex-wrap gap-2 pt-2">
+          {facts.map((fact, idx) => (
+            <span
+              key={idx}
+              className="px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 text-zinc-400"
             >
-              {personalInfo.college}
-            </a>
-            {personalInfo.aboutText2}
-          </motion.p>
+              {fact}
+            </span>
+          ))}
+        </div>
+      </div>
 
-          <div className="flex flex-wrap justify-center gap-2">
-            {facts.map((fact, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.05, duration: 0.4 }}
-                className="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest border border-white/5 bg-white/[0.02] text-zinc-500 hover:text-white hover:border-blue-500/30 transition-all duration-300"
-              >
-                {fact}
-              </motion.div>
-            ))}
+      {/* Journey & Milestones (Segmented Year Controls + Spotlight Card) */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+              Journey & Milestones
+            </h3>
+            <p className="text-xs text-zinc-400 mt-1">
+              Select a chapter to explore engineering progression and key highlights.
+            </p>
+          </div>
+
+          {/* Navigation Arrows for Quick Switching */}
+          <div className="flex items-center gap-1.5 self-start sm:self-auto">
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="w-7 h-7 flex items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-all"
+              title="Previous chapter"
+              aria-label="Previous chapter"
+            >
+              <ChevronLeft size={15} />
+            </button>
+            <span className="text-[11px] font-mono text-zinc-500 px-1">
+              {activeYearIndex + 1} / {timeline.length}
+            </span>
+            <button
+              type="button"
+              onClick={handleNext}
+              className="w-7 h-7 flex items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-all"
+              title="Next chapter"
+              aria-label="Next chapter"
+            >
+              <ChevronRight size={15} />
+            </button>
           </div>
         </div>
 
-        {/* Timeline Header */}
-        <div className="flex flex-col items-center mt-12 mb-12 text-center">
-          <h3 className="text-sm font-black text-blue-600 uppercase tracking-[0.3em]">
-            Timeline
-          </h3>
-          <div className="h-px w-24 bg-blue-600/30" />
-        </div>
-
-        {/* Timeline Grid */}
-        <div className="max-w-3xl mx-auto text-left relative border-l border-white/10 ml-4 md:mx-auto pl-8">
-          {timeline.map((item, i) => {
-            const hasMore = "more" in item && typeof item.more === "string";
-
+        {/* Year Segmented Buttons Bar */}
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/[0.02] border border-white/5 overflow-x-auto no-scrollbar">
+          {timeline.map((item, idx) => {
+            const isActive = idx === activeYearIndex;
             return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="mb-10 relative group last:mb-0"
+              <button
+                key={item.year}
+                type="button"
+                onClick={() => setActiveYearIndex(idx)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wider transition-all shrink-0 ${isActive
+                    ? "bg-white text-black shadow-sm"
+                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                  }`}
               >
-                {/* Node Dot */}
-                <span className="absolute flex h-4 w-4 rounded-full bg-black border-2 border-blue-600 -left-[41px] top-1.5 transition-all duration-500 group-hover:bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.3)]" />
-
-                <div className="flex flex-col gap-2">
-                  <span className="text-xs font-black text-zinc-500 uppercase tracking-widest">
-                    {item.year}
-                  </span>
-
-                  <div className="p-4 rounded-3xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/10 transition-all duration-500 relative overflow-hidden">
-                    <p className="text-lg md:text-xl font-bold text-white leading-relaxed">
-                      {item.detail}
-                    </p>
-
-                    <AnimatePresence>
-                      {expandedIds[i] && (
-                        <motion.p
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="text-zinc-500 mt-2 text-base leading-relaxed"
-                        >
-                          {item.more}
-                        </motion.p>
-                      )}
-                    </AnimatePresence>
-
-                    {hasMore && (
-                      <button
-                        onClick={() => toggleExpand(i)}
-                        className="mt-4 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-600 hover:text-blue-400 transition-colors"
-                      >
-                        {expandedIds[i] ? (
-                          <><Minus size={14} /> Show Less</>
-                        ) : (
-                          <><Plus size={14} /> Read Insight</>
-                        )}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
+                {item.year}
+              </button>
             );
           })}
         </div>
-      </motion.div>
-    </section>
+
+        {/* Active Milestone Card */}
+        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6 space-y-4 transition-all duration-200">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 font-mono text-xs font-bold text-blue-400 tracking-wider">
+                {currentMilestone.year}
+              </span>
+              <span className="text-xs text-zinc-500 font-medium">
+                Chapter {timeline.length - activeYearIndex}
+              </span>
+            </div>
+          </div>
+
+          <h4 className="text-base sm:text-lg font-bold text-white leading-relaxed">
+            {currentMilestone.detail}
+          </h4>
+
+          {points.length > 0 && (
+            <div className="pt-3 border-t border-white/5 space-y-2.5">
+              <p className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">
+                Key Insights & Learnings
+              </p>
+              <ul className="space-y-2">
+                {points.map((pt, pIdx) => (
+                  <li
+                    key={pIdx}
+                    className="flex items-start gap-2.5 text-xs sm:text-sm text-zinc-300 leading-relaxed"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 shrink-0" />
+                    <span>{pt.endsWith(".") ? pt : `${pt}.`}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

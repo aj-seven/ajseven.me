@@ -1,7 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Geist:wght@400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.font-signature {
+  font-family: 'Caveat', cursive, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 
 :root {
   --background: #050505;
@@ -11,18 +16,428 @@
   --border: #18181b;
 }
 
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-.dark {
+html.dark {
+  color-scheme: dark;
   --background: #050505;
   --foreground: #ffffff;
   --primary: #3b82f6;
 }
+
+html.light {
+  color-scheme: light;
+  --background: #fafafa;
+  --foreground: #09090b;
+  --primary: #2563eb;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Circular Reveal View Transitions */
+::view-transition-group(root) {
+  animation-duration: 0.75s;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  display: block;
+}
+
+::view-transition-old(root) {
+  z-index: 1 !important;
+}
+
+::view-transition-new(root) {
+  z-index: 9999 !important;
+}
+
+
+/* AJ Animated Calligraphy Stroke with staggered writing and 3s pause loop */
+.aj-stroke-1 {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: loopSig1 4.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.aj-stroke-2 {
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: loopSig2 4.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.aj-stroke-3 {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: loopSig3 4.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes loopSig1 {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0.2;
+  }
+  5% {
+    opacity: 1;
+  }
+  24% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  92% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  98% {
+    stroke-dashoffset: 0;
+    opacity: 0.2;
+  }
+  100% {
+    stroke-dashoffset: 100;
+    opacity: 0.2;
+  }
+}
+
+@keyframes loopSig2 {
+  0%, 8% {
+    stroke-dashoffset: 120;
+    opacity: 0.2;
+  }
+  12% {
+    opacity: 1;
+  }
+  32% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  92% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  98% {
+    stroke-dashoffset: 0;
+    opacity: 0.2;
+  }
+  100% {
+    stroke-dashoffset: 120;
+    opacity: 0.2;
+  }
+}
+
+@keyframes loopSig3 {
+  0%, 18% {
+    stroke-dashoffset: 60;
+    opacity: 0.2;
+  }
+  22% {
+    opacity: 1;
+  }
+  38% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  92% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  98% {
+    stroke-dashoffset: 0;
+    opacity: 0.2;
+  }
+  100% {
+    stroke-dashoffset: 60;
+    opacity: 0.2;
+  }
+}
+
+.group:hover .aj-stroke-1 {
+  animation: redrawSig1 0.7s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.group:hover .aj-stroke-2 {
+  animation: redrawSig2 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.group:hover .aj-stroke-3 {
+  animation: redrawSig3 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes redrawSig1 {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0.3;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes redrawSig2 {
+  0%, 15% {
+    stroke-dashoffset: 120;
+    opacity: 0.3;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes redrawSig3 {
+  0%, 30% {
+    stroke-dashoffset: 60;
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+
+
+
+/* Light mode UI adjustments */
+
+html.light body {
+  background-color: #fafafa !important;
+  color: #09090b !important;
+}
+
+html.light #main-content {
+  color: #09090b;
+}
+
+/* Headings and text in light mode */
+html.light .text-white {
+  color: #09090b !important;
+}
+
+html.light .text-zinc-200 {
+  color: #18181b !important;
+}
+
+html.light .text-zinc-300 {
+  color: #27272a !important;
+}
+
+html.light .text-zinc-400 {
+  color: #52525b !important;
+}
+
+html.light .text-zinc-500 {
+  color: #71717a !important;
+}
+
+/* Background cards and containers in light mode */
+html.light .bg-black\/50,
+html.light .bg-black\/85,
+html.light .bg-black\/95,
+html.light .bg-\[\#050505\]\/85 {
+  background-color: rgba(250, 250, 250, 0.88) !important;
+}
+
+html.light .bg-zinc-900,
+html.light .bg-zinc-900\/50,
+html.light .bg-zinc-900\/60,
+html.light .bg-zinc-900\/80 {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-white\/5,
+html.light .bg-white\/\[0\.02\],
+html.light .bg-white\/\[0\.015\],
+html.light .bg-white\/10 {
+  background-color: rgba(0, 0, 0, 0.035) !important;
+}
+
+html.light .hover\:bg-white\/5:hover,
+html.light .hover\:bg-white\/\[0\.04\]:hover,
+html.light .hover\:bg-white\/10:hover {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Borders in light mode */
+html.light .border-white\/5,
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20,
+html.light .border-white\/\[0\.06\] {
+  border-color: rgba(0, 0, 0, 0.09) !important;
+}
+
+
+html.light .border-\[\#050505\] {
+  border-color: #fafafa !important;
+}
+
+
+html.light .hover\:border-white\/20:hover {
+  border-color: rgba(0, 0, 0, 0.22) !important;
+}
+
+/* Hover text states in light mode - prevent turning white on hover */
+html.light .hover\:text-white:hover,
+html.light .hover\:text-zinc-100:hover,
+html.light .hover\:text-zinc-200:hover,
+html.light .hover\:text-zinc-300:hover,
+html.light .hover\:text-zinc-400:hover {
+  color: #09090b !important;
+}
+
+html.light .hover\:text-blue-400:hover,
+html.light .hover\:text-blue-300:hover {
+  color: #2563eb !important;
+}
+
+/* Group hover states in light mode */
+html.light .group:hover .group-hover\:text-white,
+html.light .group:hover .group-hover\:text-zinc-100,
+html.light .group:hover .group-hover\:text-zinc-200,
+html.light .group:hover .group-hover\:text-zinc-300 {
+  color: #09090b !important;
+}
+
+html.light .group:hover .group-hover\:text-blue-400,
+html.light .group:hover .group-hover\:text-blue-300 {
+  color: #2563eb !important;
+}
+
+html.light .group:hover .group-hover\:border-white\/20,
+html.light .group:hover .group-hover\:border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.22) !important;
+}
+
+
+/* Main CTA buttons in light mode */
+html.light a.bg-white.text-black,
+html.light button.bg-white.text-black {
+  background-color: #09090b !important;
+  color: #ffffff !important;
+}
+
+html.light a.bg-white.text-black:hover,
+html.light button.bg-white.text-black:hover {
+  background-color: #27272a !important;
+}
+
+/* Invert tech icons (e.g. Next.js, GitHub, Vercel) shouldn't invert in light mode */
+html.light .invert {
+  filter: none !important;
+}
+
+/* Typography & Blog markdown formatting - Light Mode */
+html.light .prose,
+html.light .prose p,
+html.light .prose li,
+html.light .prose ul,
+html.light .prose ol,
+html.light .prose span {
+  color: #3f3f46 !important;
+}
+
+html.light .prose h1,
+html.light .prose h2,
+html.light .prose h3,
+html.light .prose h4,
+html.light .prose h5,
+html.light .prose h6,
+html.light .prose strong,
+html.light .prose b {
+  color: #09090b !important;
+}
+
+html.light .prose a {
+  color: #2563eb !important;
+}
+
+html.light .prose a:hover {
+  color: #1d4ed8 !important;
+}
+
+html.light .prose code {
+  color: #1e40af !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  padding: 0.15rem 0.35rem !important;
+  border-radius: 0.375rem !important;
+}
+
+html.light .prose pre {
+  background-color: #18181b !important;
+  color: #f4f4f5 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .prose pre code {
+  color: #f4f4f5 !important;
+  background-color: transparent !important;
+}
+
+html.light .prose blockquote {
+  color: #52525b !important;
+  border-left: 3px solid #d4d4d8 !important;
+}
+
+html.light .prose hr {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Typography & Blog markdown formatting - Dark Mode */
+html.dark .prose,
+html.dark .prose p,
+html.dark .prose li,
+html.dark .prose ul,
+html.dark .prose ol {
+  color: #d4d4d8 !important;
+}
+
+html.dark .prose h1,
+html.dark .prose h2,
+html.dark .prose h3,
+html.dark .prose h4,
+html.dark .prose strong,
+html.dark .prose b {
+  color: #ffffff !important;
+}
+
+html.dark .prose a {
+  color: #60a5fa !important;
+}
+
+html.dark .prose code {
+  color: #93c5fd !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  padding: 0.15rem 0.35rem !important;
+  border-radius: 0.375rem !important;
+}
+
+html.dark .prose pre {
+  background-color: #09090b !important;
+  color: #e4e4e7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark .prose pre code {
+  color: #e4e4e7 !important;
+  background-color: transparent !important;
+}
+
+
 
 
 @keyframes reveal {
@@ -58,13 +473,16 @@ body {
 }
 
 @keyframes slowPulse {
-  0%, 100% { 
-    opacity: 0.6; 
-    transform: translate(-50%, -50%) scale(1); 
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1);
   }
-  50% { 
-    opacity: 1; 
-    transform: translate(-50%, -50%) scale(1.1); 
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
   }
 }
 

@@ -1,4 +1,4 @@
-const WebsiteDemoCard = ({ demoUrl }) => {
+const WebsiteDemoCard = ({ demoUrl }: { demoUrl?: string }) => {
   const handleClick = () => {
     if (demoUrl) {
       window.open(demoUrl, "_blank");

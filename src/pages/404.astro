@@ -2,50 +2,34 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="404 - Page Not Found | AJ SEVEN">
-  <section class="min-h-screen w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 relative z-10 text-center overflow-hidden">
-    
-    {/* Background 404 Text & Glow (matching Hero section) */}
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 flex items-center justify-center w-full h-full">
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-blue-600/10 blur-[120px] rounded-full animate-pulse-slow"></div>
-      <span class="relative z-10 text-[18rem] md:text-[28rem] font-black text-white/[0.04] select-none tracking-tighter">
-        404
-      </span>
+<Layout title="404 - Page Not Found | Abdul Jaber">
+  <main class="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-32 pb-24 min-h-screen text-left space-y-6">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-zinc-400 font-mono text-xs">
+      <span class="w-2 h-2 rounded-full bg-red-400"></span>
+      404 // NOT FOUND
     </div>
-    
-    {/* Foreground Content */}
-    <div class="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest">
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-        </span>
-        System Error
-      </div>
 
-      <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight leading-none">
-        Lost in space.
-      </h1>
-      
-      <p class="text-lg md:text-xl text-zinc-400 mb-12 leading-relaxed font-medium">
-        The page you are looking for doesn't exist, has been moved, or is currently floating somewhere in the void.
-      </p>
-      
-      <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-        <a
-          href="/"
-          class="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-black text-base hover:bg-zinc-200 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-white/10"
-        >
-          Return to Base
-        </a>
-        <a
-          href="/blog"
-          class="w-full sm:w-auto px-8 py-4 rounded-full border border-white/10 bg-white/5 text-white font-black text-base hover:bg-white/10 hover:border-white/20 hover:-translate-y-1 transition-all duration-300"
-        >
-          Read the Blog
-        </a>
-      </div>
+    <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight">
+      Page not found.
+    </h1>
+
+    <p class="text-sm sm:text-base text-zinc-400 max-w-lg leading-relaxed">
+      The page you are looking for doesn't exist, has been relocated, or is temporarily unavailable.
+    </p>
+
+    <div class="pt-4 flex flex-wrap items-center gap-3">
+      <a
+        href="/"
+        class="px-5 py-2.5 rounded-xl bg-white text-black font-bold text-xs hover:bg-zinc-200 transition-all shadow-sm"
+      >
+        ← Return to Home
+      </a>
+      <a
+        href="/blog"
+        class="px-5 py-2.5 rounded-xl border border-white/10 bg-white/5 text-zinc-300 font-semibold text-xs hover:bg-white/10 hover:text-white transition-all"
+      >
+        Explore Writings
+      </a>
     </div>
-    
-  </section>
+  </main>
 </Layout>

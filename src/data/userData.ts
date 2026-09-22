@@ -4,10 +4,11 @@ import {
   Link2Icon,
 } from "lucide-react";
 import XIcon from "../components/XIcon";
+import DiscordIcon from "../components/DiscordIcon";
 
 export const personalInfo = {
   name: "Abdul Jaber",
-  alias: "Aj7",
+  alias: "aka [AJ]",
   shortAlias: "AJ",
   location: "Andhra Pradesh, India",
   role: "Full Stack Developer",
@@ -18,7 +19,7 @@ export const personalInfo = {
   ],
   college: "Dr. SGIT",
   collegeUrl: "https://drsgiet.ac.in/",
-  avatarUrl: "/assets/ME.jpg",
+  avatarUrl: "/assets/ME.webp",
   status: "Available for work",
   aboutText: "Full-stack engineer specializing in scalable systems and AI-driven solutions. Crafting high-performance digital products with precision and purpose.",
   aboutText1: "I’m Abdul Jaber, based in Andhra Pradesh, India. I graduated in Electronics and Communication Engineering from ",
@@ -155,11 +156,18 @@ export const contactItems = [
     color: "text-foreground",
   },
   {
-    icon: Link2Icon,
+    icon: DiscordIcon,
     label: "Discord",
     value: "Discord",
     href: "https://discord.com/users/.ajseven",
     color: "text-indigo-500",
+  },
+  {
+    icon: Link2Icon,
+    label: "Links",
+    value: "links.ajseven.me",
+    href: "https://links.ajseven.me",
+    color: "text-blue-400",
   },
 ];
 
@@ -181,6 +189,15 @@ export const projectData = [
     category: "Web",
   },
   {
+    name: "PostalMapper",
+    description:
+      "A digital address card generator based on postal code with QR support, export options. Built with React & Tailwind.",
+    tech: ["React", "TailwindCSS", "QRCode"],
+    live: "https://postal-mapper.vercel.app",
+    github: "https://github.com/aj-seven/postal-mapper",
+    category: "Web",
+  },
+  {
     name: "Landing Page",
     description: "Simple Landing Page.",
     tech: [
@@ -193,15 +210,6 @@ export const projectData = [
     ],
     live: "https://landing-page-ajseven.vercel.app",
     github: "https://github.com/aj-seven/landing-page",
-    category: "Web",
-  },
-  {
-    name: "PostalMapper",
-    description:
-      "A digital address card generator based on postal code with QR support, export options. Built with React & Tailwind.",
-    tech: ["React", "TailwindCSS", "QRCode"],
-    live: "https://postal-mapper.vercel.app",
-    github: "https://github.com/aj-seven/postal-mapper",
     category: "Web",
   },
   {

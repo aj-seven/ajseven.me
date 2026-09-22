@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Github, ArrowUpRight } from "lucide-react";
-import clsx from "clsx";
 import { projectData } from "../data/userData";
 
-const categories = Array.from(new Set(projectData.map((p) => p.category)));
+const categories = ["all", ...Array.from(new Set(projectData.map((p) => p.category)))];
 
 const Projects = ({ limit }: { limit?: number }) => {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -17,127 +15,127 @@ const Projects = ({ limit }: { limit?: number }) => {
 
   const displayProjects = limit ? filteredProjects.slice(0, limit) : filteredProjects;
 
+  const handleCardClick = (url?: string) => {
+    if (url) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  };
+
   return (
-    <section id="projects" className="w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 pt-24 lg:pt-32 pb-16 lg:pb-24 min-h-screen text-foreground relative z-10 scroll-mt-32">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="w-full max-w-6xl"
-      >
-        <div className="flex flex-col items-center mb-12 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-white tracking-tighter"
-          >
+    <div className="w-full text-left space-y-6">
+      {/* Header & Category Filters */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
             Featured Projects
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-base md:text-lg lg:text-xl text-zinc-500 max-w-2xl mx-auto font-medium"
-          >
-            A collection of my most impactful work, from web applications to creative experiments.
-          </motion.p>
+          </h2>
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+            Software products, open source tools, and experiments.
+          </p>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-2 mb-4">
-          <button
-            onClick={() => setActiveCategory("all")}
-            className={clsx(
-              "px-4 py-2 rounded-full text-sm font-black transition-all duration-300 uppercase tracking-widest border",
-              activeCategory === "all"
-                ? "bg-white text-black border-white"
-                : "text-zinc-500 border-white/10 hover:border-white/30 hover:text-white"
-            )}
-          >
-            All
-          </button>
+        {/* Minimal Category Tabs */}
+        <div className="flex items-center gap-1.5 bg-white/[0.02] p-1 rounded-xl border border-white/5 self-start sm:self-auto">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={clsx(
-                "px-6 py-2 rounded-full text-sm font-black transition-all duration-300 uppercase tracking-widest border",
+              className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
                 activeCategory === cat
-                  ? "bg-white text-black border-white"
-                  : "text-zinc-500 border-white/10 hover:border-white/30 hover:text-white"
-              )}
+                  ? "bg-white text-black font-bold shadow-sm"
+                  : "text-zinc-400 hover:text-white"
+              }`}
             >
               {cat}
             </button>
           ))}
         </div>
+      </div>
 
-        {/* Projects Grid */}
-        <div className="grid gap-4 md:grid-cols-2 max-w-6xl mx-auto sm:px-0">
-          {displayProjects.map((project) => (
-            <motion.div
+      {/* Compact Projects Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        {displayProjects.map((project) => {
+          const mainUrl = project.live || project.github;
+
+          return (
+            <div
               key={project.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="rounded-3xl p-4 border border-white/5 bg-white/[0.02] hover:border-blue-500/30 hover:bg-white/[0.04] transition-all duration-500 text-left flex flex-col h-full group"
+              onClick={() => handleCardClick(mainUrl)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleCardClick(mainUrl);
+                }
+              }}
+              className="group cursor-pointer rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20 p-4 sm:p-5 transition-all duration-200 flex flex-col justify-between"
             >
-              <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-blue-500 transition-colors">{project.name}</h3>
-              <p className="text-base text-zinc-400 mb-6 flex-grow leading-relaxed">
-                {project.description || "Building the future of digital experiences."}
-              </p>
-              <div className="flex flex-wrap gap-1 text-xs mb-4">
+              <div>
+                {/* Card Header: Title + GitHub Action */}
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <h3 className="text-base font-bold text-white group-hover:text-blue-400 transition-colors truncate">
+                      {project.name}
+                    </h3>
+                    {project.live && (
+                      <ArrowUpRight
+                        size={14}
+                        className="text-zinc-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all flex-shrink-0"
+                      />
+                    )}
+                  </div>
+
+                  {/* GitHub Action Only */}
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-1.5 rounded-lg border border-white/5 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all flex-shrink-0"
+                      title="View GitHub Repository"
+                      aria-label={`View ${project.name} on GitHub`}
+                    >
+                      <Github size={14} />
+                    </a>
+                  )}
+                </div>
+
+                {/* Description */}
+                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-4 line-clamp-2">
+                  {project.description || "Experimental digital product."}
+                </p>
+              </div>
+
+              {/* Tech Tags */}
+              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-white/5">
                 {project.tech.map((t) => (
                   <span
                     key={t}
-                    className="bg-white/5 border border-white/10 px-3 py-1 rounded-lg text-zinc-300 font-semibold tracking-tight"
+                    className="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-white/5 text-zinc-400"
                   >
                     {t}
                   </span>
                 ))}
               </div>
+            </div>
+          );
+        })}
+      </div>
 
-              <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors font-bold"
-                  >
-                    <Github size={18} /> Source
-                  </a>
-                )}
-                {project.live && (
-                  <a
-                    href={project.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-black text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-widest"
-                  >
-                    Live Demo →
-                  </a>
-                )}
-              </div>
-            </motion.div>
-          ))}
+      {/* View All Projects Link */}
+      {limit && filteredProjects.length > limit && (
+        <div className="pt-2">
+          <a
+            href="/projects"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-400 hover:text-white transition-colors"
+          >
+            View all {projectData.length} projects <ArrowUpRight size={14} />
+          </a>
         </div>
-
-        {limit && filteredProjects.length > limit && (
-          <div className="mt-16 flex justify-center">
-            <a
-              href="/projects"
-              className="px-8 py-3.5 rounded-full border border-white/10 text-white font-black text-base transition-all duration-300 hover:bg-white/5 hover:border-white/30 flex items-center gap-2 group"
-            >
-              View More Projects
-              <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </a>
-          </div>
-        )}
-      </motion.div>
-    </section>
+      )}
+    </div>
   );
 };
 

@@ -14,7 +14,7 @@ interface Props {
 }
 
 const {
-  title = "Abdul Jaber | Full Stack Developer",
+  title = "AJ",
   description = "Personal website and portfolio of Abdul Jaber. Full Stack Developer specializing in modern web technologies, scalable systems, and beautiful UI.",
   image = "/assets/og.jpg",
   type = "website",
@@ -75,7 +75,31 @@ const canonicalURL =
       sizes="32x32"
       href="/icons/icon-192x192.png"
     />
-    <link rel="shortcut icon" href="/assets/Logo.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="/icons/icon-192x192.png" type="image/png+xml" />
+
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme-mode') || 'dark';
+        if (theme === 'light') {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        } else {
+          document.documentElement.classList.remove('light');
+          document.documentElement.classList.add('dark');
+        }
+      })();
+
+      document.addEventListener('astro:after-swap', () => {
+        const theme = localStorage.getItem('theme-mode') || 'dark';
+        if (theme === 'light') {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        } else {
+          document.documentElement.classList.remove('light');
+          document.documentElement.classList.add('dark');
+        }
+      });
+    </script>
 
     <ViewTransitions />
   </head>
@@ -83,9 +107,10 @@ const canonicalURL =
     <GlobalBackground client:only="react" transition:persist="bg" />
     <NavbarWrapper client:only="react" transition:persist="nav" />
 
-    <div id="main-content">
+    <div id="main-content" class="relative z-10">
       <slot />
     </div>
+
 
     <TerminalWrapper client:only="react" transition:persist="terminal" />
   </body>

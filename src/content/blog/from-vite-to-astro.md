@@ -2,9 +2,10 @@
 title: "From Vite to Astro"
 description: "Why I rebuilt my portfolio with Astro and what I learned during the migration."
 image: "/assets/blog/from-vite-to-astro.webp"
+date: "2026-09-21"
 ---
 
-I originally built my portfolio with **React and Vite** because it was the stack I was most comfortable using. It was fast to build, easy to maintain, and worked perfectly for a highly interactive portfolio.
+I originally built my personal website with **React and Vite** because it was the stack I was most comfortable using. It was fast to build, easy to maintain, and worked perfectly for a highly interactive portfolio.
 
 However, over time I decided I wanted to add a blog. That's when I started looking at Astro.
 
@@ -28,7 +29,7 @@ The last issue was styling the Markdown posts themselves. Tailwind wasn't scanni
 
 ## The Result
 
-The portfolio now loads significantly faster, the blog is generated as pure static HTML, and writing new posts is as simple as dropping a Markdown file into a folder.
+The website now loads significantly faster, the blog is generated as pure static HTML, and writing new posts is as simple as dropping a Markdown file into a folder.
 
 I still get to use React for the complex, interactive parts, while Astro efficiently handles all the static content generation.
 
