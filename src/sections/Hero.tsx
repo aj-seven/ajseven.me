@@ -1,30 +1,25 @@
 "use client";
 
-import { ArrowUpRight, Mail } from "lucide-react";
+import { useState } from "react";
+import { ArrowUpRight, Copy, Check } from "lucide-react";
 import { personalInfo, contactItems, resume } from "../data/userData";
-import { motion } from "framer-motion";
 
 const Hero = () => {
-  return (
-    <div className="w-full pt-2 sm:pt-4 pb-2 text-left">
-      {/* Profile Header Row: Avatar on Left + Name/Role on Right */}
-      <div className="flex items-center gap-5 sm:gap-6 mb-6">
-        <div className="relative flex-shrink-0">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border border-white/10 bg-zinc-900 shadow-lg">
-            <img
-              src={personalInfo.avatarUrl}
-              alt={personalInfo.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
-            <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500 border-2 border-[#050505]" />
-          </span>
-        </div>
+  const [copied, setCopied] = useState(false);
+  const email = "ajseven@outlook.in";
 
-        <div className="space-y-1">
-          <div className="flex flex-wrap items-center gap-2">
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <header className="w-full text-left pt-2 pb-6 space-y-6">
+      {/* Editorial Identity Bar: Organic Avatar + Headline */}
+      <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-5 sm:gap-6">
+        <div className="space-y-1.5 max-w-xl">
+          <div className="flex items-baseline gap-2.5 flex-wrap">
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               {personalInfo.name}
             </h1>
@@ -43,52 +38,43 @@ const Hero = () => {
             <span className="text-green-400 font-medium">{personalInfo.status}</span>
           </div>
         </div>
+
+        {/* Avatar */}
+        <div className="relative shrink-0 self-start sm:self-auto">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border border-white/10 bg-zinc-900 shadow-md">
+            <img
+              src={personalInfo.avatarUrl}
+              alt={personalInfo.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Brief Profile Bio */}
-      <p className="text-base sm:text-lg text-zinc-300 leading-relaxed max-w-2xl mb-6">
+      {/* Profile Bio */}
+      <p className="text-base sm:text-lg text-zinc-300 leading-relaxed max-w-2xl font-normal">
         {personalInfo.aboutText}
       </p>
 
-      {/* Action Buttons & Direct Links Row */}
-      <div className="flex flex-wrap items-center gap-3 pt-1">
-        <a
-          href="#contact"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-zinc-200 transition-all"
-        >
-          <Mail size={14} />
-          Get in Touch
-        </a>
-
-        <a
-          href={resume["full-stack-developer"]}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-xs sm:text-sm hover:bg-white/10 transition-all"
-        >
-          Resume
-          <ArrowUpRight size={14} />
-        </a>
-
-        <div className="h-4 w-px bg-white/10 mx-1 hidden sm:block" />
-
-        {/* Social Icons */}
-        <div className="flex items-center gap-2">
+      {/* Editorial Direct Actions & Network Colophon */}
+      <div className="flex flex-wrap items-center gap-y-3 gap-x-6 pt-1 text-xs font-medium text-zinc-400">
+        {/* Quiet Network Links */}
+        <div className="flex items-center gap-4 flex-wrap">
           {contactItems.map((item, idx) => (
             <a
               key={idx}
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all"
-              title={item.label}
+              className="inline-flex items-center gap-1 text-zinc-400 hover:text-white transition-colors"
             >
-              <item.icon size={16} />
+              <span>{item.label}</span>
+              <ArrowUpRight size={11} className="text-zinc-600" />
             </a>
           ))}
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

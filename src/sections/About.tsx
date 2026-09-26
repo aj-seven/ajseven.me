@@ -1,36 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
-import { personalInfo, facts, timeline } from "../data/userData";
+import { personalInfo, timeline } from "../data/userData";
 
 const About = () => {
-  const [activeYearIndex, setActiveYearIndex] = useState(0);
+  const [expandedYears, setExpandedYears] = useState<Record<string, boolean>>({});
 
-  const currentMilestone = timeline[activeYearIndex] || timeline[0];
-  const points = currentMilestone.more
-    ? currentMilestone.more
-      .split(". ")
-      .map((p) => p.trim())
-      .filter(Boolean)
-    : [];
-
-  const handlePrev = () => {
-    setActiveYearIndex((prev) => (prev > 0 ? prev - 1 : timeline.length - 1));
-  };
-
-  const handleNext = () => {
-    setActiveYearIndex((prev) => (prev < timeline.length - 1 ? prev + 1 : 0));
+  const toggleYear = (year: string) => {
+    setExpandedYears((prev) => ({
+      ...prev,
+      [year]: !prev[year],
+    }));
   };
 
   return (
-    <div className="w-full text-left space-y-10">
-      {/* Who Am I Section */}
-      <div className="space-y-4">
+    <div className="w-full text-left space-y-8">
+      {/* Section Headline */}
+      <div className="space-y-4 border-b border-white/5 pb-6">
         <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
           Who Am I
         </h2>
-
         <p className="text-base sm:text-lg text-zinc-300 leading-relaxed max-w-3xl">
           {personalInfo.aboutText1}
           <a
@@ -43,113 +32,68 @@ const About = () => {
           </a>
           {personalInfo.aboutText2}
         </p>
-
-        {/* Minimal Tags */}
-        <div className="flex flex-wrap gap-2 pt-2">
-          {facts.map((fact, idx) => (
-            <span
-              key={idx}
-              className="px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 text-zinc-400"
-            >
-              {fact}
-            </span>
-          ))}
-        </div>
       </div>
 
-      {/* Journey & Milestones (Segmented Year Controls + Spotlight Card) */}
+      {/* Journey & Milestones: Linear Progression */}
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-          <div>
-            <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
-              Journey & Milestones
-            </h3>
-            <p className="text-xs text-zinc-400 mt-1">
-              Select a chapter to explore engineering progression and key highlights.
-            </p>
-          </div>
-
-          {/* Navigation Arrows for Quick Switching */}
-          <div className="flex items-center gap-1.5 self-start sm:self-auto">
-            <button
-              type="button"
-              onClick={handlePrev}
-              className="w-7 h-7 flex items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-all"
-              title="Previous chapter"
-              aria-label="Previous chapter"
-            >
-              <ChevronLeft size={15} />
-            </button>
-            <span className="text-[11px] font-mono text-zinc-500 px-1">
-              {activeYearIndex + 1} / {timeline.length}
-            </span>
-            <button
-              type="button"
-              onClick={handleNext}
-              className="w-7 h-7 flex items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-all"
-              title="Next chapter"
-              aria-label="Next chapter"
-            >
-              <ChevronRight size={15} />
-            </button>
-          </div>
+        <div>
+          <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+            Journey & Milestones
+          </h3>
+          <p className="text-xs text-zinc-400 mt-1">
+            Engineering progression and key highlights across each phase.
+          </p>
         </div>
 
-        {/* Year Segmented Buttons Bar */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/[0.02] border border-white/5 overflow-x-auto no-scrollbar">
-          {timeline.map((item, idx) => {
-            const isActive = idx === activeYearIndex;
+        <div className="divide-y divide-white/5 pt-2">
+          {timeline.map((item) => {
+            const isExpanded = !!expandedYears[item.year];
+
             return (
-              <button
+              <div
                 key={item.year}
-                type="button"
-                onClick={() => setActiveYearIndex(idx)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold tracking-wider transition-all shrink-0 ${isActive
-                    ? "bg-white text-black shadow-sm"
-                    : "text-zinc-400 hover:text-white hover:bg-white/5"
-                  }`}
+                className="py-4 first:pt-1 last:pb-1 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-8 group"
               >
-                {item.year}
-              </button>
+                {/* Year Marker */}
+                <div className="w-20 shrink-0 font-mono text-xs font-semibold text-blue-400 sm:text-zinc-500 group-hover:text-blue-400 transition-colors">
+                  {item.year}
+                </div>
+
+                {/* Content */}
+                <div className="space-y-1.5 flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-3">
+                    <h4 className="text-sm sm:text-base font-bold text-white group-hover:text-zinc-100 transition-colors">
+                      {item.detail}
+                    </h4>
+
+                    {/* Small <> button to toggle remaining info */}
+                    {item.more && (
+                      <button
+                        type="button"
+                        onClick={() => toggleYear(item.year)}
+                        className={`inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[11px] font-mono shrink-0 transition-colors cursor-pointer select-none ${
+                          isExpanded
+                            ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
+                            : "bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 border border-white/10"
+                        }`}
+                        title={isExpanded ? "Hide remaining info" : "Show remaining info"}
+                        aria-expanded={isExpanded}
+                      >
+                        &lt;&gt;
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Remaining Info (Revealed on click) */}
+                  {isExpanded && item.more && (
+                    <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal pt-0.5">
+                      {item.more}
+                    </p>
+                  )}
+                </div>
+              </div>
             );
           })}
-        </div>
-
-        {/* Active Milestone Card */}
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:p-6 space-y-4 transition-all duration-200">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 font-mono text-xs font-bold text-blue-400 tracking-wider">
-                {currentMilestone.year}
-              </span>
-              <span className="text-xs text-zinc-500 font-medium">
-                Chapter {timeline.length - activeYearIndex}
-              </span>
-            </div>
-          </div>
-
-          <h4 className="text-base sm:text-lg font-bold text-white leading-relaxed">
-            {currentMilestone.detail}
-          </h4>
-
-          {points.length > 0 && (
-            <div className="pt-3 border-t border-white/5 space-y-2.5">
-              <p className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">
-                Key Insights & Learnings
-              </p>
-              <ul className="space-y-2">
-                {points.map((pt, pIdx) => (
-                  <li
-                    key={pIdx}
-                    className="flex items-start gap-2.5 text-xs sm:text-sm text-zinc-300 leading-relaxed"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 shrink-0" />
-                    <span>{pt.endsWith(".") ? pt : `${pt}.`}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </div>
     </div>

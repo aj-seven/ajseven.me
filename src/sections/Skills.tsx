@@ -5,7 +5,8 @@ import { skills } from "../data/userData";
 const Skills = () => {
   return (
     <div className="w-full text-left space-y-6">
-      <div>
+      {/* Header */}
+      <div className="border-b border-white/5 pb-4">
         <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
           Tech Stack
         </h2>
@@ -14,24 +15,33 @@ const Skills = () => {
         </p>
       </div>
 
-      <div className="space-y-4">
+      {/* Editorial Domain Ledger (Zero Card Boxes) */}
+      <div className="divide-y divide-white/5">
         {skills.map((group) => (
-          <div key={group.category} className="space-y-2">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400">
+          <div
+            key={group.category}
+            className="py-4 first:pt-1 last:pb-1 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-8"
+          >
+            {/* Domain Label */}
+            <div className="w-28 shrink-0 font-mono text-xs font-bold uppercase tracking-wider text-zinc-400">
               {group.category}
-            </h3>
+            </div>
 
-            <div className="flex flex-wrap gap-2">
+            {/* Technologies Flow */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 flex-1">
               {group.items.map((item) => (
                 <div
                   key={item.name}
-                  className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/20 transition-all duration-200 group cursor-default"
+                  className="inline-flex items-center gap-2 group cursor-default"
                 >
-                  <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
+                  <div className="w-3.5 h-3.5 flex items-center justify-center shrink-0 opacity-70 group-hover:opacity-100 transition-opacity">
                     <img
                       src={item.icon}
                       alt={item.name}
-                      className={`w-full h-full object-contain ${item.invertDark ? "invert" : ""}`}
+                      className={`w-full h-full object-contain ${
+                        item.invertDark ? "invert" : ""
+                      }`}
+                      loading="lazy"
                     />
                   </div>
                   <span className="text-xs font-medium text-zinc-300 group-hover:text-white transition-colors">
@@ -48,4 +58,3 @@ const Skills = () => {
 };
 
 export default Skills;
-

@@ -14,8 +14,8 @@ interface Props {
 const Blog = ({ posts }: Props) => {
   return (
     <div className="w-full text-left space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+      {/* Header Row */}
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-white/5 pb-4">
         <div>
           <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
             Writings
@@ -37,42 +37,44 @@ const Blog = ({ posts }: Props) => {
         </a>
       </div>
 
-      {/* Post List (Limited to 2 on Homepage) */}
-      <div className="space-y-3">
+      {/* Writings Ledger (Zero Card Boxes) */}
+      <div className="divide-y divide-white/5">
         {posts.map((post) => (
           <a
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20 transition-all duration-200"
+            className="py-4 first:pt-1 last:pb-1 group block transition-colors"
           >
-            <div className="space-y-1.5 flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-blue-400 transition-colors truncate">
-                  {post.title}
-                </h3>
-                <ArrowUpRight
-                  size={14}
-                  className="text-zinc-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all flex-shrink-0"
-                />
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 sm:gap-6">
+              <div className="space-y-1 flex-1 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-blue-400 transition-colors">
+                    {post.title}
+                  </h3>
+                  <ArrowUpRight
+                    size={14}
+                    className="text-zinc-500 group-hover:text-blue-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0"
+                  />
+                </div>
+                {post.description && (
+                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal line-clamp-2 max-w-2xl">
+                    {post.description}
+                  </p>
+                )}
               </div>
-              {post.description && (
-                <p className="text-xs sm:text-sm text-zinc-400 line-clamp-2 leading-relaxed">
-                  {post.description}
-                </p>
+
+              {post.date && (
+                <span className="font-mono text-xs text-zinc-500 shrink-0 self-start sm:self-auto group-hover:text-zinc-400 transition-colors">
+                  {post.date}
+                </span>
               )}
             </div>
-
-            {post.date && (
-              <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono font-medium text-zinc-400 group-hover:text-zinc-200 group-hover:border-white/20 whitespace-nowrap flex-shrink-0 self-start sm:self-center transition-colors">
-                {post.date}
-              </span>
-            )}
           </a>
         ))}
 
         {posts.length === 0 && (
-          <div className="text-zinc-500 py-8 text-center border border-dashed border-white/10 rounded-2xl text-xs flex items-center justify-center gap-2">
-            <BookOpen size={14} className="text-zinc-500" />
+          <div className="text-zinc-500 py-6 text-center text-xs flex items-center justify-center gap-2">
+            <BookOpen size={14} className="text-zinc-600" />
             <span>No writings published yet. Check back soon.</span>
           </div>
         )}
