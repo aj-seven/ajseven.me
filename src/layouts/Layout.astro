@@ -23,6 +23,43 @@ const {
 const canonicalURL =
   Astro.props.canonicalURL ||
   new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": "https://ajseven.me/#person",
+  "name": "Abdul Jaber",
+  "alternateName": ["AJ Seven", "AJ"],
+  "url": "https://ajseven.me/",
+  "image": "https://ajseven.me/assets/ME.webp",
+  "jobTitle": "Full Stack Developer",
+  "description":
+    "Abdul Jaber, known online as AJ Seven (or AJ), is a full-stack engineer and tech explorer specializing in scalable systems, AI-driven solutions, and high-performance digital products.",
+  "sameAs": [
+    "https://github.com/aj-seven",
+    "https://x.com/its_ajseven",
+    "https://www.linkedin.com/in/ajseven",
+    "https://links.ajseven.me"
+  ],
+  "knowsAbout": [
+    "Software Development",
+    "Full Stack Development",
+    "Web Development",
+    "Artificial Intelligence",
+    "Scalable Systems",
+    "TypeScript",
+    "JavaScript",
+    "React",
+    "Next.js",
+    "Astro",
+    "Node.js",
+    "Tailwind CSS",
+    "Desktop Applications",
+    "Tauri",
+    "Linux",
+    "Electronics"
+  ]
+};
 ---
 
 <!doctype html>
@@ -76,6 +113,12 @@ const canonicalURL =
       href="/icons/icon-192x192.png"
     />
     <link rel="shortcut icon" href="/icons/icon-192x192.png" type="image/png+xml" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(personSchema, null, 2)}
+    />
 
     <script is:inline>
       (function() {
