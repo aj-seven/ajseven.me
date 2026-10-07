@@ -18,6 +18,7 @@ export function formatBlogDate(
 
   const monthFormat = options?.monthFormat ?? 'long';
   const monthNames = monthFormat === 'short' ? monthNamesShort : monthNamesLong;
+  const includeDay = options?.includeDay ?? false;
 
   if (typeof dateValue === 'string') {
     const trimmed = dateValue.trim();
@@ -38,10 +39,10 @@ export function formatBlogDate(
       const monthIdx = parseInt(ymdMatch[2], 10) - 1;
       const day = parseInt(ymdMatch[3], 10);
       const monthName = monthNames[monthIdx] || '';
-      if (options?.includeDay === false) {
-        return `${monthName}, ${year}`;
+      if (includeDay) {
+        return `${monthName} ${day}, ${year}`;
       }
-      return `${monthName} ${day}, ${year}`;
+      return `${monthName}, ${year}`;
     }
 
     // 3. Year only: e.g. "2026"
@@ -58,5 +59,9 @@ export function formatBlogDate(
   const monthName = monthNames[d.getUTCMonth()];
   const day = d.getUTCDate();
 
-  return `${monthName} ${day}, ${year}`;
+  if (includeDay) {
+    return `${monthName} ${day}, ${year}`;
+  }
+
+  return `${monthName}, ${year}`;
 }
