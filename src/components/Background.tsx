@@ -10,13 +10,13 @@ const GlobalBackground = () => {
       className={`fixed inset-0 z-0 ${isLight ? "bg-[#fafafa]" : "bg-[#050505]"
         } pointer-events-none overflow-hidden transition-colors duration-300`}
     >
-      {/* Visible, Balanced Dot Matrix Pattern Overlay */}
+      {/* Subtle Dot Matrix Pattern Overlay */}
       <div
         className="absolute inset-0"
         style={{
           backgroundImage: isLight
-            ? `radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px)`
-            : `radial-gradient(rgba(255, 255, 255, 0.10) 1px, transparent 1px)`,
+            ? `radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px)`
+            : `radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px)`,
           backgroundSize: "24px 24px",
         }}
       />
