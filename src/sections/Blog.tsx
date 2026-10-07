@@ -21,7 +21,7 @@ const Blog = ({ posts }: Props) => {
             Writings
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            Technical deep dives, system design, and engineering reflections.
+            Tinkering with electronics, building software, and what I learn along the way.
           </p>
         </div>
 
