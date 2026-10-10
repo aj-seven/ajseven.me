@@ -151,8 +151,8 @@ export const contactItems = [
   {
     icon: XIcon,
     label: "X",
-    value: "x.com/its_ajseven",
-    href: "https://x.com/its_ajseven",
+    value: "x.com/hii_ajseven",
+    href: "https://x.com/hii_ajseven",
     color: "text-foreground",
   },
   {
