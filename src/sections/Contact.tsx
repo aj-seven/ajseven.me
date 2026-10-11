@@ -6,7 +6,7 @@ import { ArrowUpRight, Copy, Check } from "lucide-react";
 
 const Contact = () => {
   const [copied, setCopied] = useState(false);
-  const email = "ajseven@outlook.in";
+  const email = "hii@ajseven.me";
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(email);
